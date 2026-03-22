@@ -1,0 +1,6 @@
+bin/*.class
+bin/META-INF/
+bin/canonmaker.jar
+doc/
+*.class
+.idea/
