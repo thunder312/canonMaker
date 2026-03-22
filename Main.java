@@ -112,6 +112,7 @@ public class Main {
             .setOffsetTicks(CanonNote.WHOLE)            // 1 Takt = 4 × 480 = 1920 ticks
             .setInstruments(new int[]{68, 71, 70})     // Oboe, Klarinette, Fagott
             .setChannels(new int[]{0, 1, 2})
+            .setOctaveOffsets(new int[]{0, 0, -1})     // Fagott eine Oktave tiefer → Bassschlüssel
             .setTempoBpm(80)
             .setRepetitions(2);
 

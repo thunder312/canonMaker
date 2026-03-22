@@ -79,6 +79,7 @@ class CanonMakerApiImpl implements CanonMakerApi {
             }
 
             // Melodie wiederholen
+            int octaveOffset = config.getOctaveOffsetFor(v);
             for (int rep = 0; rep < repetitions; rep++) {
                 for (CanonNote note : melody.getNotes()) {
                     NoteDuration dur = ticksToNoteDuration(note.getTicks());
@@ -86,7 +87,7 @@ class CanonMakerApiImpl implements CanonMakerApi {
                         track.addRest(dur);
                     } else {
                         track.addNote(midi.fromNoteName(note.getGermanName(),
-                                                        note.getOctave(), dur));
+                                                        note.getOctave() + octaveOffset, dur));
                     }
                 }
             }

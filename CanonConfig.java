@@ -21,12 +21,13 @@
  */
 public final class CanonConfig {
 
-    private int   numVoices   = 3;
-    private int   offsetTicks = CanonNote.WHOLE;        // 1 Takt (4 Viertelnoten = 1920 Ticks)
-    private int[] instruments = {0, 40, 42};            // Klavier, Violine, Cello
-    private int[] channels    = {0, 1, 2};
-    private int   tempoBpm    = 80;
-    private int   repetitions = 2;
+    private int   numVoices    = 3;
+    private int   offsetTicks  = CanonNote.WHOLE;        // 1 Takt (4 Viertelnoten = 1920 Ticks)
+    private int[] instruments  = {0, 40, 42};            // Klavier, Violine, Cello
+    private int[] channels     = {0, 1, 2};
+    private int   tempoBpm     = 80;
+    private int   repetitions  = 2;
+    private int[] octaveOffsets = {};                    // Oktavversatz pro Stimme (Standard: 0)
 
     /** Anzahl der Stimmen (Standard: 3). */
     public CanonConfig setNumVoices(int numVoices) {
@@ -70,6 +71,16 @@ public final class CanonConfig {
         return this;
     }
 
+    /**
+     * Oktavversatz pro Stimme (scaleMaker-Einheiten, 0 = keine Verschiebung).
+     * <p>Beispiel: {@code new int[]{0, 0, -1}} lässt Stimme 3 eine Oktave tiefer spielen,
+     * sodass Notationsprogramme (z.B. Dorian) automatisch den Bassschlüssel wählen.</p>
+     */
+    public CanonConfig setOctaveOffsets(int[] octaveOffsets) {
+        this.octaveOffsets = octaveOffsets;
+        return this;
+    }
+
     /** Anzahl der Melodie-Wiederholungen pro Stimme (Standard: 2). */
     public CanonConfig setRepetitions(int repetitions) {
         if (repetitions < 1) throw new IllegalArgumentException("Mindestens 1 Wiederholung");
@@ -79,12 +90,13 @@ public final class CanonConfig {
 
     // ==================== GETTER ====================
 
-    public int   getNumVoices()   { return numVoices; }
-    public int   getOffsetTicks() { return offsetTicks; }
-    public int[] getInstruments() { return instruments; }
-    public int[] getChannels()    { return channels; }
-    public int   getTempoBpm()    { return tempoBpm; }
-    public int   getRepetitions() { return repetitions; }
+    public int   getNumVoices()    { return numVoices; }
+    public int   getOffsetTicks()  { return offsetTicks; }
+    public int[] getInstruments()  { return instruments; }
+    public int[] getChannels()     { return channels; }
+    public int   getTempoBpm()     { return tempoBpm; }
+    public int   getRepetitions()  { return repetitions; }
+    public int[] getOctaveOffsets(){ return octaveOffsets; }
 
     /** Instrument-Programmnummer für Stimme v (0-basiert), mit Fallback auf 0. */
     public int getInstrumentFor(int voice) {
@@ -94,6 +106,11 @@ public final class CanonConfig {
     /** MIDI-Kanal für Stimme v (0-basiert), mit Fallback auf v. */
     public int getChannelFor(int voice) {
         return (voice < channels.length) ? channels[voice] : voice;
+    }
+
+    /** Oktavversatz für Stimme v (0-basiert), mit Fallback auf 0. */
+    public int getOctaveOffsetFor(int voice) {
+        return (voice < octaveOffsets.length) ? octaveOffsets[voice] : 0;
     }
 
     @Override
